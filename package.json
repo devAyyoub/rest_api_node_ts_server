@@ -1,0 +1,25 @@
+{
+  "name": "rest_api_node_ts_server",
+  "version": "1.0.0",
+  "description": "REST API'S with Express and Typescript",
+  "homepage": "https://github.com/devAyyoub/rest_api_node_ts_server#readme",
+  "bugs": {
+    "url": "https://github.com/devAyyoub/rest_api_node_ts_server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devAyyoub/rest_api_node_ts_server.git"
+  },
+  "license": "ISC",
+  "author": "devAyyoub",
+  "main": "index.js",
+  "scripts": {
+    "dev": " nodemon --exec tsx src/index.ts"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.2.2"
+  }
+}
