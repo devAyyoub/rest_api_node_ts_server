@@ -74,3 +74,22 @@ export const updateAvailability = async (
 
   res.json({ data: product });
 };
+export const deleteProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  const product = await Product.findByPk(id);
+
+  // check if product exists
+  if (!product) {
+    res.status(404).json({ error: "Producto no encontrado" });
+    return;
+  }
+
+  // Update the product
+  await product.destroy()
+
+  res.json({ data: "Producto eliminado" });
+};
+
