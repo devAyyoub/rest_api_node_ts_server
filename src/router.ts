@@ -5,6 +5,7 @@ import {
   getProducts,
   getProductById,
   updateProduct,
+  updateAvailability,
 } from "./handlers/product";
 import { handleInputErrors } from "./middleware";
 
@@ -17,6 +18,23 @@ router.get(
   param("id").isInt().withMessage("ID no válido"),
   handleInputErrors,
   getProductById
+);
+
+router.post(
+  "/",
+  body("name")
+    .notEmpty()
+    .withMessage("El nombre del producto no puede ir vacío"),
+
+  body("price")
+    .isNumeric()
+    .withMessage("Valor no válido")
+    .notEmpty()
+    .withMessage("El precio del producto no puede ir vacío")
+    .custom((value) => value > 0)
+    .withMessage("Precio no válido"),
+  handleInputErrors,
+  createProduct
 );
 router.put(
   "/:id",
@@ -36,27 +54,7 @@ router.put(
   handleInputErrors,
   updateProduct
 );
-router.post(
-  "/",
-  body("name")
-    .notEmpty()
-    .withMessage("El nombre del producto no puede ir vacío"),
-
-  body("price")
-    .isNumeric()
-    .withMessage("Valor no válido")
-    .notEmpty()
-    .withMessage("El precio del producto no puede ir vacío")
-    .custom((value) => value > 0)
-    .withMessage("Precio no válido"),
-  handleInputErrors,
-  createProduct
-);
-
-router.patch("/", (req, res) => {
-  const auth = true;
-  res.json("Desde patch");
-});
+router.patch("/:id", updateAvailability);
 router.delete("/", (req, res) => {
   const auth = true;
   res.json("Desde delete");
