@@ -92,4 +92,3 @@ export const deleteProduct = async (
 
   res.json({ data: "Producto eliminado" });
 };
-
