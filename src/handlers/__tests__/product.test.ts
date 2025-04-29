@@ -55,11 +55,32 @@ describe("GET /api/products", () => {
     const response = await request(server).get("/api/products");
     expect(response.statusCode).not.toBe(404);
   });
-  test("GET a JSON response with products", async () => {
+  test("should GET a JSON response with products", async () => {
     const response = await request(server).get("/api/products");
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty("data");
     expect(response.headers["content-type"]).toMatch(/json/);
     expect(response.body).not.toHaveProperty("errors");
+  });
+});
+
+describe("GET /api/products/:id", () => {
+  test("should return a 404 for a non-existent product", async () => {
+    const productId = 2000;
+    const response = await request(server).get(`/api/products/${productId}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toHaveProperty("error");
+  });
+  test("should check a valid ID in the URL", async () => {
+    const response = await request(server).get("/api/products/not-valid-url");
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("errors");
+    expect(response.body.errors[0].msg).toBe("ID no válido");
+  });
+  test("should get a JSON response for a single product", async () => {
+    const response = await request(server).get("/api/products/1");
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("data");
   });
 });
