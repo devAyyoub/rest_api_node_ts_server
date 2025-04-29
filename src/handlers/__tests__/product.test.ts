@@ -84,3 +84,68 @@ describe("GET /api/products/:id", () => {
     expect(response.body).toHaveProperty("data");
   });
 });
+
+describe("PUT /api/products/:id", () => {
+  test("should check a valid ID in the URL", async () => {
+    const response = await request(server)
+      .put("/api/products/not-valid-url")
+      .send({
+        name: "Monitor nuevo curvo",
+        price: 500,
+        availability: true,
+      });
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("errors");
+    expect(response.body.errors[0].msg).toBe("ID no válido");
+  });
+  test("should display validation error messages when updating a product", async () => {
+    const response = await request(server).put("/api/products/1").send({});
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toHaveProperty("errors");
+    expect(response.body.errors).toBeTruthy();
+
+    expect(response.statusCode).not.toBe(200);
+  });
+  test("should validate that the price is greater than 0", async () => {
+    const response = await request(server).put("/api/products/1").send({
+      name: "Monitor nuevo curvo",
+      price: -500,
+      availability: true,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toHaveProperty("errors");
+    expect(response.body.errors).toBeTruthy();
+
+    expect(response.statusCode).not.toBe(200);
+  });
+  test("should return a 404 for a non-existent product", async () => {
+    const productId = 2000;
+    const response = await request(server)
+      .put(`/api/products/${productId}`)
+      .send({
+        name: "Monitor nuevo curvo",
+        price: 500,
+        availability: true,
+      });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.error).toBe("Producto no encontrado");
+
+    expect(response.statusCode).not.toBe(200);
+  });
+  test("should update an existing product with valid data", async () => {
+    const productId = 2000;
+    const response = await request(server).put("/api/products/1").send({
+      name: "Monitor nuevo curvo",
+      price: 500,
+      availability: true,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty("data");
+
+    expect(response.statusCode).not.toBe(404);
+  });
+});
