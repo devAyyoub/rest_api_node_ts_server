@@ -74,13 +74,13 @@ describe("GET /api/products/:id", () => {
   });
   test("should check a valid ID in the URL", async () => {
     const response = await request(server).get("/api/products/not-valid-url");
-    expect(response.status).toBe(400);
+    expect(response.statusCode).toBe(400);
     expect(response.body).toHaveProperty("errors");
     expect(response.body.errors[0].msg).toBe("ID no válido");
   });
   test("should get a JSON response for a single product", async () => {
     const response = await request(server).get("/api/products/1");
-    expect(response.status).toBe(200);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty("data");
   });
 });
@@ -94,7 +94,7 @@ describe("PUT /api/products/:id", () => {
         price: 500,
         availability: true,
       });
-    expect(response.status).toBe(400);
+    expect(response.statusCode).toBe(400);
     expect(response.body).toHaveProperty("errors");
     expect(response.body.errors[0].msg).toBe("ID no válido");
   });
@@ -147,5 +147,29 @@ describe("PUT /api/products/:id", () => {
     expect(response.body).toHaveProperty("data");
 
     expect(response.statusCode).not.toBe(404);
+  });
+});
+
+describe("DELETE /api/products/:id", () => {
+  test("should check a valid ID", async () => {
+    const response = await request(server).delete("/api/products/not-valid");
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toHaveProperty("errors");
+    expect(response.body.errors[0].msg).toBe("ID no válido");
+  });
+
+  test("should response a 404 response for a non-existing product", async () => {
+    const productId = 2000;
+    const response = await request(server).delete(`/api/products/${productId}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.error).toBe("Producto no encontrado");
+  });
+
+  test("should delete a product", async () => {
+    const response = await request(server).delete("/api/products/1");
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty("data");
   });
 });
