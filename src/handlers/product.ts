@@ -29,12 +29,8 @@ export const createProduct = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const product = await Product.create(req.body);
-    res.status(201).json({ data: product });
-  } catch (error) {
-    console.log(error);
-  }
+  const product = await Product.create(req.body);
+  res.status(201).json({ data: product });
 };
 export const updateProduct = async (
   req: Request,
@@ -69,7 +65,7 @@ export const updateAvailability = async (
   }
 
   // Update the product
-  product.availability = !product.dataValues.availability
+  product.availability = !product.dataValues.availability;
   await product.save();
 
   res.json({ data: product });
@@ -88,7 +84,7 @@ export const deleteProduct = async (
   }
 
   // Update the product
-  await product.destroy()
+  await product.destroy();
 
   res.json({ data: "Producto eliminado" });
 };

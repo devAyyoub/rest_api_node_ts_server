@@ -1,5 +1,6 @@
 import request from "supertest";
 import server from "../../server";
+import { response } from "express";
 
 describe("POST /api/products", () => {
   test("should display validation errors", async () => {
@@ -147,6 +148,22 @@ describe("PUT /api/products/:id", () => {
     expect(response.body).toHaveProperty("data");
 
     expect(response.statusCode).not.toBe(404);
+  });
+});
+
+describe("PATCH /api/products/:id", () => {
+  test("should return a 404 for a non-existing product", async () => {
+    const productId = 2000;
+    const response = await request(server).patch(`/api/products/${productId}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toHaveProperty("error");
+  });
+  test("should update the product availability", async () => {
+    const response = await request(server).patch("/api/products/1");
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty("data");
   });
 });
 
