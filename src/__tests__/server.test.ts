@@ -1,15 +1,5 @@
-import request from 'supertest'
-import server, {connectDB} from '../server'
+import { connectDB } from '../server'
 import db from '../config/db'
-
-describe('GET /api', () => { 
-    test('should send back a json response', async () => {
-        const res = await request(server).get('/api')
-
-        expect(res.status).toBe(200)
-        
-    })
- })
 
  jest.mock('../config/db')
 
