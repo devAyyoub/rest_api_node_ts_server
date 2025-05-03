@@ -1,4 +1,5 @@
 import swaggerJSDoc from "swagger-jsdoc";
+import { SwaggerUiOptions } from "swagger-ui-express";
 
 const options : swaggerJSDoc.Options = {
     swaggerDefinition : {
@@ -19,4 +20,20 @@ const options : swaggerJSDoc.Options = {
 }
 
 const swaggerSpec = swaggerJSDoc(options)
+
+const swaggerUiOptions : SwaggerUiOptions = {
+    customCss: `
+        .topbar-wrapper .link {
+            content: url('https://www.cdnlogo.com/logos/n/88/nodejs.svg');
+            height: 120px;
+            width: auto;
+        }
+        .swagger-ui .topbar {
+            background-color: gray
+        }
+    `
+}
 export default swaggerSpec
+export {
+    swaggerUiOptions
+}
