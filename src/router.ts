@@ -114,7 +114,11 @@ router.get(
  *                              example: 499
  *      responses:
  *          201:
- *              description: Product creaated succesfully
+ *              description: Succesful response
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Product'
  *          400:
  *              description: Bad request - invalid input data
  */
@@ -135,6 +139,51 @@ router.post(
   handleInputErrors,
   createProduct
 );
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *  put:
+ *      summary: Creates a product
+ *      tags:
+ *          - Products
+ *      description: Updates a product with user input
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          description: The id of the product to retrieve
+ *          required: true
+ *          schema:
+ *              type: integer
+  *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                              example: "13' Macbook pro 2024"
+ *                          price:
+ *                              type: number
+ *                              example: 499
+ *                          availability:
+ *                              type: boolean
+ *                              example: true
+ *      responses:
+ *          200:
+ *              description: Succesful response
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Product'
+ *          404:
+ *              description: Not found
+ *          400:
+ *              description: Bad request - Invalid ID
+ */
+
 router.put(
   "/:id",
   param("id").isInt().withMessage("ID no válido"),
