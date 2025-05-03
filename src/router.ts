@@ -155,7 +155,7 @@ router.post(
  *          required: true
  *          schema:
  *              type: integer
-  *      requestBody:
+ *      requestBody:
  *          required: true
  *          content:
  *              application/json:
@@ -215,7 +215,7 @@ router.put(
  *      parameters:
  *        - in: path
  *          name: id
- *          description: The id of the product to retrieve
+ *          description: The id of the product 
  *          required: true
  *          schema:
  *              type: integer
@@ -237,6 +237,33 @@ router.patch(
   handleInputErrors,
   updateAvailability
 );
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *  delete:
+ *      summary: Delete a specific product
+ *      tags:
+ *          - Products
+ *      description: Deletes a product by its unique ID
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          description: The id of the product to delete
+ *          required: true
+ *          schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: Succesful response
+ *              schema:
+ *                  type: string
+ *                  value: 'Producto eliminado correctamente'
+ *          404:
+ *              description: Not found
+ *          400:
+ *              description: Bad request - Invalid ID
+ */
 router.delete(
   "/:id",
   param("id").isInt().withMessage("ID no válido"),
