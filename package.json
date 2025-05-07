@@ -17,7 +17,8 @@
     "dev": " nodemon --exec tsx src/index.ts",
     "test": "jest --detectOpenHandles",
     "test:coverage": "npm run pretest && jest --detectOpenHandles --coverage",
-    "pretest": "ts-node ./src/data --clear"
+    "pretest": "ts-node ./src/data --clear",
+    "build" : "tsc"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
